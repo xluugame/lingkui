@@ -27,10 +27,20 @@ export interface FunVersion {
 /** 互动工具类型 */
 export type FunTool = "" | "giant-hp";
 
-export const FUN_TOOL_LABELS: Record<FunTool, string> = {
-  "": "无互动工具（纯规则页）",
-  "giant-hp": "小巨人血量器（共享房间）",
-};
+/** 血量器按钮（后台可为每个玩法自定义，key 在保存时自动生成） */
+export interface HpButton {
+  key: string;
+  label: string;
+  delta: number;
+}
+
+/** 小巨人血量器默认按钮 */
+export const GIANT_HP_BUTTONS: HpButton[] = [
+  { key: "fail", label: "撤离失败", delta: 2 },
+  { key: "w700", label: "撤离成功 700W+", delta: -5 },
+  { key: "w1000", label: "撤离成功 1000W+", delta: -5 },
+  { key: "w1200", label: "撤离成功 1200W+", delta: -5 },
+];
 
 /** 趣味单定义 */
 export interface FunOrderDef {
@@ -38,26 +48,26 @@ export interface FunOrderDef {
   name: string;
   /** 卡片一句话简介 */
   summary: string;
+  /** 卡片规则要点（每条一行，显示在卡片中部） */
+  cardRules: string[];
   /** 完整规则（纯文本，支持换行） */
   rules: string;
   tool: FunTool;
+  /** 血量器按钮（tool = giant-hp 时生效；空数组用默认四键） */
+  hpButtons?: HpButton[];
   versions: FunVersion[];
   sortOrder: number;
 }
 
-/** 小巨人血量器按钮（key 固定，前后端共用） */
-export interface GiantHpButton {
-  key: string;
-  label: string;
-  delta: number;
+/** 取玩法的有效血量按钮：自定义优先，否则默认四键 */
+export function effectiveHpButtons(o: { hpButtons?: HpButton[] }): HpButton[] {
+  return o.hpButtons?.length ? o.hpButtons : GIANT_HP_BUTTONS;
 }
 
-export const GIANT_HP_BUTTONS: GiantHpButton[] = [
-  { key: "fail", label: "撤离失败", delta: 2 },
-  { key: "w700", label: "撤离成功 700W+", delta: -5 },
-  { key: "w1000", label: "撤离成功 1000W+", delta: -5 },
-  { key: "w1200", label: "撤离成功 1200W+", delta: -5 },
-];
+export const FUN_TOOL_LABELS: Record<FunTool, string> = {
+  "": "无互动工具（纯规则页）",
+  "giant-hp": "小巨人血量器（共享房间）",
+};
 
 /** 内置默认趣味单：小巨人单 */
 export const FUN_ORDER_DEFAULTS: FunOrderDef[] = [
@@ -65,6 +75,13 @@ export const FUN_ORDER_DEFAULTS: FunOrderDef[] = [
     slug: "giant",
     name: "小巨人单",
     summary: "血量挑战：撤离失败加血、大额撤离扣血，清空血量即算通关",
+    cardRules: [
+      "体验版 10 点血 / 进阶版 25 点血",
+      "撤离失败 +2，大额撤离 -5",
+      "血量清零即完成挑战",
+      "丢包、双倒血量照算，金额不计",
+      "房间码进房，不限人数实时同步",
+    ],
     rules: `【玩法简介】
 打手携带初始血量开局。撤离失败加血、达成大额撤离扣血，血量清零即完成挑战。
 

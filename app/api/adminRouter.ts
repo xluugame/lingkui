@@ -44,6 +44,12 @@ const funOrderInput = z.object({
   slug: z.string().min(1, "标识必填").max(32).regex(/^[a-z0-9-]+$/, "标识只能用小写字母、数字、短横线"),
   name: z.string().min(1, "名称必填").max(64),
   summary: z.string().max(200).default(""),
+  cardRules: z.array(z.string().max(60)).max(8).default([]),
+  hpButtons: z.array(z.object({
+    key: z.string().max(16),
+    label: z.string().min(1, "按钮名称必填").max(20),
+    delta: z.number().int().min(-99).max(99),
+  })).max(8).optional(),
   rules: z.string().max(20000).default(""),
   tool: z.enum(["", "giant-hp"]).default(""),
   versions: z.array(funVersionSchema).max(6).default([]),

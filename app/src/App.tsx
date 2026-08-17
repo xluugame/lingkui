@@ -4,7 +4,7 @@ import { trpc } from '@/providers/trpc'
 import { applyContentOverrides } from '@/config/content'
 import Home from './pages/Home'
 import DeltaForce from './pages/DeltaForce'
-import { BingoSetup, BingoRoomView } from './pages/Bingo'
+import { BingoSetup, BingoRoomView, BingoDemo } from './pages/Bingo'
 import Players from './pages/Players'
 import PlayerDetail from './pages/PlayerDetail'
 import Recruit from './pages/Recruit'
@@ -42,6 +42,7 @@ export default function App() {
       <Route path="/admin" element={<Admin />} />
       <Route path="/game/delta-force" element={<DeltaForce />} />
       <Route path="/game/delta-force/bingo" element={<BingoSetup />} />
+      <Route path="/game/delta-force/bingo/demo" element={<BingoDemo />} />
       <Route path="/game/delta-force/fun/:slug" element={<FunOrder />} />
       <Route path="/room/:code" element={<BingoRoomView />} />
     </Routes>
