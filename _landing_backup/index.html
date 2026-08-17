@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>铃葵电竞 · LINGKUI ESPORTS — 游戏陪玩</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   配色与设计变量（改颜色只动这里）
+   ============================================================ */
+:root{
+  --bg:#ffffff;
+  --bg-soft:#f5f6f8;
+  --card:#ffffff;
+  --line:rgba(15,23,42,.08);
+  --line2:rgba(15,23,42,.14);
+  --txt:#0f172a;
+  --sub:#5b6170;
+  --dim:#9aa1af;
+  --blue:#2e6bff;
+  --pink:#ff6fb5;
+  --blue-soft:rgba(46,107,255,.08);
+  --pink-soft:rgba(255,111,181,.1);
+  --grad:linear-gradient(100deg,var(--blue),var(--pink));
+  --shadow:0 12px 40px rgba(15,23,42,.08);
+  --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--blue);color:#fff}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#d4d8e0;border-radius:5px}
+.font-latin{font-family:'Space Grotesk','Noto Sans SC',sans-serif}
+
+/* ============================================================
+   导航（滚动时浮起 + 毛玻璃）
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,5vw,64px);height:64px;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(20px) saturate(1.6);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,box-shadow .3s;
+}
+nav.scrolled{border-bottom-color:var(--line);box-shadow:0 4px 24px rgba(15,23,42,.05)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt)}
+.nav-brand img{width:28px;height:28px}
+.nav-brand .name{font-size:15px;font-weight:600;letter-spacing:3px}
+.nav-brand .sep{width:1px;height:13px;background:var(--line2)}
+.nav-brand .en{font-family:'Space Grotesk',sans-serif;font-size:9.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:26px}
+.nav-link{font-size:13.5px;color:var(--sub);text-decoration:none;letter-spacing:1px;transition:color .25s}
+.nav-link:hover{color:var(--txt)}
+.btn-kefu{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;font-size:13px;font-weight:500;
+  color:#fff;text-decoration:none;letter-spacing:1px;
+  border-radius:999px;
+  background:var(--blue);
+  transition:background .25s,box-shadow .25s,transform .25s;
+}
+.btn-kefu:hover{background:#1f5bf0;box-shadow:0 6px 20px rgba(46,107,255,.35);transform:translateY(-1px)}
+.btn-kefu svg{width:14px;height:14px}
+
+/* ============================================================
+   Hero（Apple 式：大留白 + 超大字 + 柔光）
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:130px 20px 100px;
+  overflow:hidden;
+}
+.hero-glow{
+  position:absolute;border-radius:50%;pointer-events:none;
+  filter:blur(100px);
+}
+.hero-glow.g1{
+  width:46vw;height:46vw;left:-10vw;top:-8vw;
+  background:radial-gradient(circle,rgba(46,107,255,.14),transparent 65%);
+}
+.hero-glow.g2{
+  width:40vw;height:40vw;right:-8vw;top:6vw;
+  background:radial-gradient(circle,rgba(255,111,181,.16),transparent 65%);
+}
+#dots{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:960px}
+.hero-logo{
+  width:clamp(88px,9.5vw,120px);height:auto;
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-tag{
+  margin-top:34px;
+  display:inline-flex;align-items:center;gap:9px;
+  padding:7px 18px;border-radius:999px;
+  border:1px solid var(--line2);
+  background:rgba(255,255,255,.7);
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+  font-size:11px;letter-spacing:4px;color:var(--sub);text-transform:uppercase;
+}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.wordmark{
+  margin-top:24px;
+  font-size:clamp(56px,10.5vw,128px);
+  font-weight:700;
+  line-height:1.12;
+  letter-spacing:.1em;text-indent:.1em;
+}
+.wordmark .g{
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.hero-en{
+  margin-top:14px;
+  font-family:'Space Grotesk',sans-serif;font-weight:500;
+  font-size:clamp(11px,1.5vw,16px);
+  letter-spacing:.65em;text-indent:.65em;
+  color:var(--dim);
+}
+.hero-slogan{
+  margin-top:36px;
+  font-size:clamp(14px,1.8vw,17px);
+  font-weight:300;color:var(--sub);
+  letter-spacing:.08em;line-height:2.1;
+}
+.hero-slogan .line{display:block}
+.hero-slogan b{color:var(--txt);font-weight:500}
+.hero-cta{margin-top:44px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn-primary{
+  padding:15px 40px;border-radius:999px;
+  font-size:15px;font-weight:600;color:#fff;text-decoration:none;letter-spacing:2px;
+  background:var(--blue);
+  transition:background .3s,box-shadow .3s,transform .3s;
+}
+.btn-primary:hover{background:#1f5bf0;box-shadow:0 10px 30px rgba(46,107,255,.4);transform:translateY(-2px)}
+.btn-ghost{
+  padding:15px 36px;border-radius:999px;
+  font-size:15px;font-weight:500;color:var(--txt);text-decoration:none;letter-spacing:2px;
+  border:1px solid var(--line2);
+  background:rgba(255,255,255,.6);
+  transition:border-color .3s,background .3s,transform .3s;
+}
+.btn-ghost:hover{border-color:var(--pink);background:var(--pink-soft);transform:translateY(-2px)}
+.scroll-hint{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:9px;
+  font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:4px;color:var(--dim);
+}
+.scroll-hint .bar{width:1px;height:36px;background:linear-gradient(var(--blue),transparent);animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ============================================================
+   游戏索引带
+   ============================================================ */
+.games-strip{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--bg-soft);
+}
+.games-inner{
+  max-width:1240px;margin:0 auto;
+  display:flex;align-items:stretch;overflow-x:auto;
+  scrollbar-width:none;
+}
+.games-inner::-webkit-scrollbar{display:none}
+.game-item{
+  flex:1 0 auto;
+  padding:20px clamp(16px,2.6vw,36px);
+  text-align:center;
+  font-size:13.5px;letter-spacing:2px;color:var(--sub);white-space:nowrap;
+  border-right:1px solid var(--line);
+  position:relative;
+  transition:color .25s,background .25s;
+}
+.game-item:first-child{border-left:1px solid var(--line)}
+.game-item::after{
+  content:'';position:absolute;left:50%;bottom:12px;transform:translateX(-50%) scaleX(0);
+  width:16px;height:2px;border-radius:2px;background:var(--grad);transition:transform .3s ease;
+}
+.game-item:hover{color:var(--txt);background:#fff}
+.game-item:hover::after{transform:translateX(-50%) scaleX(1)}
+.game-item .no{
+  display:block;
+  font-family:'Space Grotesk',sans-serif;font-size:9.5px;letter-spacing:2px;
+  color:var(--dim);margin-bottom:5px;
+}
+
+/* ============================================================
+   通用区块
+   ============================================================ */
+section{position:relative;padding:clamp(90px,11vw,150px) clamp(20px,6vw,80px)}
+.container{max-width:1120px;margin:0 auto}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.sec-kicker{
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;
+  letter-spacing:5px;text-transform:uppercase;color:var(--blue);
+  display:flex;align-items:center;gap:12px;
+}
+.sec-kicker::before{content:'';width:26px;height:1.5px;background:var(--grad)}
+.sec-title{
+  margin-top:16px;
+  font-size:clamp(30px,4.6vw,48px);
+  font-weight:700;letter-spacing:.06em;line-height:1.3;
+}
+.sec-note{font-size:13px;color:var(--dim);letter-spacing:1px;padding-bottom:8px}
+
+/* 入场动画（Apple 式：更慢、位移更小、大缓动） */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.22,.61,.21,1),transform .9s cubic-bezier(.22,.61,.21,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ============================================================
+   流程
+   ============================================================ */
+.steps{
+  margin-top:60px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+}
+.step{
+  padding:38px 32px 34px;
+  border-radius:var(--radius);
+  background:var(--card);
+  border:1px solid var(--line);
+  transition:transform .4s cubic-bezier(.22,.61,.21,1),box-shadow .4s,border-color .4s;
+}
+.step:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:rgba(46,107,255,.25)}
+.step .num{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;
+  font-size:13px;letter-spacing:3px;
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.step .line-h{margin-top:14px;height:1.5px;background:var(--line);border-radius:2px;position:relative;overflow:hidden}
+.step .line-h::after{
+  content:'';position:absolute;left:0;top:0;height:100%;width:0;background:var(--grad);
+  transition:width .5s ease;
+}
+.step:hover .line-h::after{width:100%}
+.step h3{margin-top:20px;font-size:19px;font-weight:600;letter-spacing:2px}
+.step p{margin-top:12px;font-size:13.5px;line-height:1.95;color:var(--sub);font-weight:300}
+
+/* 数据带 */
+.stats{
+  margin-top:22px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+.stat{background:var(--bg-soft);padding:34px 20px;text-align:center}
+.stat .v{
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:700;
+  font-size:clamp(28px,3.6vw,42px);color:var(--txt);letter-spacing:1px;
+}
+.stat .v em{
+  font-style:normal;
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.stat .k{margin-top:8px;font-size:12px;color:var(--dim);letter-spacing:3px}
+
+/* ============================================================
+   趣味匹配（浅灰底区块，卡片浮起）
+   ============================================================ */
+.match{background:var(--bg-soft)}
+.match-panel{
+  margin-top:56px;
+  border:1px solid var(--line);border-radius:22px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.match-head{
+  padding:18px 32px;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+  font-size:11.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;
+}
+.match-head .live{display:flex;align-items:center;gap:8px;color:var(--blue);font-weight:600}
+.match-head .live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);animation:pulse 2s infinite}
+.match-body{padding:clamp(26px,4vw,44px) clamp(20px,4vw,44px)}
+.match-q{font-size:15px;font-weight:600;letter-spacing:2px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.match-q .qn{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:2px;color:var(--pink)}
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{
+  padding:11px 22px;border-radius:999px;
+  font-size:14px;letter-spacing:1.5px;color:var(--sub);
+  border:1px solid var(--line2);background:#fff;
+  cursor:pointer;user-select:none;
+  transition:all .25s ease;
+}
+.chip:hover{border-color:var(--blue);color:var(--txt);transform:translateY(-1px)}
+.chip.on{
+  color:#fff;border-color:transparent;background:var(--blue);
+  box-shadow:0 6px 18px rgba(46,107,255,.3);
+}
+#gameChips .chip.on{background:var(--pink);box-shadow:0 6px 18px rgba(255,111,181,.35)}
+.match-sep{height:1px;background:var(--line);margin:32px 0}
+.match-result{
+  margin-top:8px;
+  border:1.5px dashed rgba(46,107,255,.4);border-radius:14px;
+  background:var(--blue-soft);
+  padding:24px 26px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.match-result .label{font-size:10.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;font-family:'Space Grotesk','Noto Sans SC',sans-serif;margin-bottom:8px}
+.match-result .text{font-size:clamp(15px,2vw,18px);letter-spacing:1px;line-height:1.8}
+.match-result .text b{color:var(--blue);font-weight:600}
+.match-result .text b.pk{color:var(--pink)}
+.btn-copy{
+  flex:0 0 auto;
+  padding:12px 26px;border-radius:999px;border:1.5px solid var(--blue);
+  background:#fff;color:var(--blue);
+  font-size:13.5px;font-family:inherit;letter-spacing:2px;cursor:pointer;
+  transition:all .25s;
+}
+.btn-copy:hover{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(46,107,255,.3)}
+.match-actions{margin-top:26px;display:flex;justify-content:center}
+
+/* ============================================================
+   页脚
+   ============================================================ */
+footer{
+  border-top:1px solid var(--line);
+  padding:28px clamp(20px,6vw,80px);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:#fff;
+}
+footer .f-brand{display:flex;align-items:center;gap:10px;color:var(--sub);font-size:13px;letter-spacing:2px}
+footer .f-brand img{width:22px;height:22px}
+footer .f-copy{font-size:12px;color:var(--dim);letter-spacing:1px;font-family:'Space Grotesk','Noto Sans SC',sans-serif}
+
+/* ============================================================
+   移动端
+   ============================================================ */
+@media (max-width:820px){
+  .steps{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .nav-right .nav-link{display:none}
+  .nav-brand .en{display:none}
+  .nav-brand .sep{display:none}
+  .hero-slogan{font-size:13px;letter-spacing:.04em}
+  .wordmark{letter-spacing:.06em;text-indent:.06em}
+  .match-result{flex-direction:column;align-items:stretch;text-align:center}
+  .btn-copy{width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-brand" href="#top">
+    <img src="logo.png" alt="铃葵电竞 Logo">
+    <span class="name" data-t="brandName"></span>
+    <span class="sep"></span>
+    <span class="en" data-t="brandEn"></span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="#flow" data-t="navFlow"></a>
+    <a class="nav-link" href="#match" data-t="navMatch"></a>
+    <a class="btn-kefu kefu-link" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span data-t="navKefu"></span>
+    </a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-glow g1"></div>
+  <div class="hero-glow g2"></div>
+  <canvas id="dots"></canvas>
+  <div class="hero-inner">
+    <img class="hero-logo" src="logo.png" alt="铃葵电竞">
+    <div class="hero-tag"><span class="dot"></span><span data-t="heroTag"></span></div>
+    <h1 class="wordmark" data-t="wordmark"></h1>
+    <div class="hero-en font-latin" data-t="heroEn"></div>
+    <p class="hero-slogan">
+      <span class="line" data-t="slogan1"></span>
+      <span class="line" data-t="slogan2"></span>
+    </p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#match" data-t="ctaFind"></a>
+      <a class="btn-ghost kefu-link" href="#" data-t="ctaJoin"></a>
+    </div>
+  </div>
+  <div class="scroll-hint">SCROLL<span class="bar"></span></div>
+</header>
+
+<!-- ============ 游戏索引带 ============ -->
+<div class="games-strip">
+  <div class="games-inner" id="gamesStrip"></div>
+</div>
+
+<!-- ============ 流程 ============ -->
+<section id="flow">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="sec-kicker reveal">HOW IT WORKS</div>
+        <h2 class="sec-title reveal" data-t="flowTitle"></h2>
+      </div>
+      <div class="sec-note reveal" data-t="flowNote"></div>
+    </div>
+    <div class="steps" id="stepsWrap"></div>
+    <div class="stats reveal" id="statsWrap"></div>
+  </div>
+</section>
+
+<!-- ============ 趣味匹配 ============ -->
+<section class="match" id="match">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="sec-kicker reveal">QUICK MATCH</div>
+        <h2 class="sec-title reveal" data-t="matchTitle"></h2>
+      </div>
+      <div class="sec-note reveal" data-t="matchNote"></div>
+    </div>
+    <div class="match-panel reveal">
+      <div class="match-head">
+        <span data-t="matchPanelTag"></span>
+        <span class="live" data-t="matchLive"></span>
+      </div>
+      <div class="match-body">
+        <div class="match-q"><span class="qn font-latin">Q1</span><span data-t="matchQ1"></span></div>
+        <div class="chips" id="modeChips"></div>
+        <div class="match-sep"></div>
+        <div class="match-q"><span class="qn font-latin">Q2</span><span data-t="matchQ2"></span></div>
+        <div class="chips" id="gameChips"></div>
+        <div class="match-sep"></div>
+        <div class="match-result">
+          <div>
+            <div class="label" data-t="matchCardLabel"></div>
+            <div class="text" id="requestText"></div>
+          </div>
+          <button class="btn-copy" id="btnCopy"></button>
+        </div>
+        <div class="match-actions">
+          <a class="btn-primary kefu-link" href="#" id="btnSend"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">
+    <img src="logo.png" alt="">
+    <span data-t="footerBrand"></span>
+  </div>
+  <div class="f-copy" data-t="footerCopy"></div>
+</footer>
+
+<script>
+/* ============================================================
+   ★★★ 文案配置区 ★★★
+   全站所有文字都在下面这个 SITE_TEXT 对象里。
+   想改哪句，直接改引号 "" 里的内容，保存即生效。
+   注意：只改引号内的文字，不要动 key 名和标点结构。
+   ============================================================ */
+const SITE_TEXT = {
+  // —— 导航栏 ——
+  brandName:  "铃葵电竞",
+  brandEn:    "LINGKUI ESPORTS",
+  navFlow:    "下单流程",
+  navMatch:   "快速匹配",
+  navKefu:    "联系客服",
+
+  // —— 首屏 Hero ——
+  heroTag:    "GAME COMPANION CLUB",
+  wordmark:   "铃葵电竞",
+  heroEn:     "LINGKUI ESPORTS",
+  slogan1:    "一个人的排位太安静，{b}把队友送到你身边。",   // {b} 的位置会显示高亮品牌名
+  slogan2:    "全游戏品类 · 实名认证打手 · 声音先试听后下单",
+  ctaFind:    "开始找陪玩",
+  ctaJoin:    "打手入驻",
+
+  // —— 游戏索引带（一行一个，可增删） ——
+  games: ["王者荣耀","英雄联盟","和平精英","永劫无间","无畏契约","CS2","DOTA2","APEX 英雄","金铲铲之战","三角洲行动"],
+
+  // —— 下单流程 ——
+  flowTitle:  "三步，开局",
+  flowNote:   "从选人到进队，平均 3 分钟",
+  steps: [
+    { title: "挑选你的打手", desc: "按游戏、段位、性别、价格自由筛选。每位打手都有真实照片、段位截图和语音试音，先看再选，不踩雷。" },
+    { title: "联系客服下单", desc: "一键跳转企业微信，把心仪的打手发给客服，确认时间与价格。全程人工对接，三分钟完成下单。" },
+    { title: "组队，开玩",   desc: "打手准时上线进队。上分、娱乐、连麦聊天都由你定——打完这局，下一局还想点 TA。" },
+  ],
+  stats: [
+    { value: "50+",   label: "认证打手" },
+    { value: "全品类", label: "覆盖游戏" },
+    { value: "7×24",  label: "客服在线" },
+  ],
+
+  // —— 趣味匹配 ——
+  matchTitle:     "今晚，想怎么玩",
+  matchNote:      "选一下，直接发给客服",
+  matchPanelTag:  "LINGKUI / QUICK MATCH",
+  matchLive:      "客服在线",
+  matchQ1:        "想玩点什么？",
+  matchQ2:        "哪个游戏？",
+  matchModes:     ["上分冲段","娱乐开黑","连麦聊天","练技术 · 教学","过生日 · 整活"],
+  matchGames:     ["王者荣耀","英雄联盟","和平精英","永劫无间","无畏契约","CS2","其他游戏"],
+  matchCardLabel: "YOUR REQUEST / 你的需求卡",
+  matchEmpty:     "点上面的选项，生成你的专属需求",
+  matchTemplate:  "你好，我想点陪玩：{game} · {mode}，请帮我安排打手。",  // {game}=所选游戏 {mode}=所选玩法
+  matchPickGame:  "选个游戏",
+  matchPickMode:  "选个玩法",
+  btnCopy:        "复制需求",
+  btnCopied:      "已复制 ✓",
+  btnCopyEmpty:   "先选一下再复制",
+  btnSend:        "发给客服，马上安排",
+
+  // —— 页脚 ——
+  footerBrand: "铃葵电竞 · LINGKUI ESPORTS",
+  footerCopy:  "© 2026 LINGKUI ESPORTS · 游戏陪玩服务",
+
+  // —— 客服链接：拿到企业微信「联系我」链接后，粘贴到引号里 ——
+  kefuUrl: "#",
+};
+/* ============================================================
+   以下是程序逻辑，一般不需要改动
+   ============================================================ */
+
+/* ---------- 渲染 data-t 文本 ---------- */
+(function(){
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const key = el.dataset.t;
+    let v = SITE_TEXT[key];
+    if(v === undefined) return;
+    if(key === 'slogan1'){
+      v = v.replace('{b}', '<b>' + SITE_TEXT.brandName.replace(/电竞$/,'') + '</b>');
+      el.innerHTML = v;
+    }else{
+      el.textContent = v;
+    }
+  });
+  // 字标渐变后半：末两字上渐变色
+  const wm = document.querySelector('.wordmark');
+  const t = SITE_TEXT.wordmark;
+  if(t.length >= 2){
+    wm.innerHTML = t.slice(0,-2) + '<span class="g">' + t.slice(-2) + '</span>';
+  }else{
+    wm.textContent = t;
+  }
+  // 客服链接统一注入
+  document.querySelectorAll('.kefu-link').forEach(a=>a.href = SITE_TEXT.kefuUrl);
+  document.title = SITE_TEXT.brandName + ' · ' + SITE_TEXT.brandEn + ' — 游戏陪玩';
+})();
+
+/* ---------- 游戏索引带 ---------- */
+(function(){
+  const wrap = document.getElementById('gamesStrip');
+  SITE_TEXT.games.forEach((g,i)=>{
+    const d = document.createElement('div');
+    d.className = 'game-item';
+    d.innerHTML = '<span class="no font-latin">' + String(i+1).padStart(2,'0') + '</span>' + g;
+    wrap.appendChild(d);
+  });
+})();
+
+/* ---------- 流程与数据 ---------- */
+(function(){
+  const sw = document.getElementById('stepsWrap');
+  SITE_TEXT.steps.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'step reveal';
+    d.innerHTML =
+      '<div class="num font-latin">STEP ' + String(i+1).padStart(2,'0') + '</div>' +
+      '<div class="line-h"></div>' +
+      '<h3>' + s.title + '</h3>' +
+      '<p>' + s.desc + '</p>';
+    sw.appendChild(d);
+  });
+  const tw = document.getElementById('statsWrap');
+  SITE_TEXT.stats.forEach(s=>{
+    const d = document.createElement('div');
+    d.className = 'stat';
+    // 末位字符做渐变高亮
+    const v = s.value;
+    const hl = v.length > 1 ? v.slice(0,-1) + '<em>' + v.slice(-1) + '</em>' : '<em>' + v + '</em>';
+    d.innerHTML = '<div class="v font-latin">' + hl + '</div><div class="k">' + s.label + '</div>';
+    tw.appendChild(d);
+  });
+})();
+
+/* ---------- 导航滚动状态 ---------- */
+(function(){
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', ()=>{
+    nav.classList.toggle('scrolled', scrollY > 8);
+  }, {passive:true});
+})();
+
+/* ---------- 交互粒子（轻量，蓝粉双色） ---------- */
+(function(){
+  const canvas = document.getElementById('dots');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const mouse = {x:-9999, y:-9999};
+  const COLORS = ['46,107,255','255,111,181'];
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+    init();
+  }
+  function init(){
+    const count = Math.min(110, Math.floor(W * H / 22000));
+    particles = [];
+    for(let i=0;i<count;i++){
+      particles.push({
+        x: Math.random()*W, y: Math.random()*H,
+        ox: 0, oy: 0,
+        r: (Math.random()*1.4 + .6) * devicePixelRatio,
+        c: COLORS[Math.floor(Math.random()*COLORS.length)],
+        a: Math.random()*.3 + .1,
+        vx:(Math.random()-.5)*.12*devicePixelRatio,
+        vy:(Math.random()-.5)*.12*devicePixelRatio,
+        tw: Math.random()*Math.PI*2
+      });
+    }
+  }
+  const R = () => Math.min(W,H) / 5;
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    const r = R();
+    for(const p of particles){
+      p.tw += .02;
+      p.x += p.vx; p.y += p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const d = Math.hypot(dx,dy);
+      if(d < r && d > 0){
+        const f = (1 - d/r) * 1.6 * devicePixelRatio;
+        p.ox += (dx/d)*f; p.oy += (dy/d)*f;
+      }
+      p.ox *= .9; p.oy *= .9;
+      const alpha = p.a * (.6 + .4*Math.sin(p.tw));
+      ctx.beginPath();
+      ctx.arc(p.x + p.ox, p.y + p.oy, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(' + p.c + ',' + alpha + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  const hero = document.querySelector('.hero');
+  hero.addEventListener('mousemove', e=>{
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - rect.left) * devicePixelRatio;
+    mouse.y = (e.clientY - rect.top) * devicePixelRatio;
+  });
+  hero.addEventListener('mouseleave', ()=>{ mouse.x = -9999; mouse.y = -9999; });
+  hero.addEventListener('touchmove', e=>{
+    const t = e.touches[0], rect = canvas.getBoundingClientRect();
+    mouse.x = (t.clientX - rect.left) * devicePixelRatio;
+    mouse.y = (t.clientY - rect.top) * devicePixelRatio;
+  }, {passive:true});
+  window.addEventListener('resize', resize);
+  resize(); tick();
+})();
+
+/* ---------- 滚动入场（Apple 式交错） ---------- */
+(function(){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const el = en.target;
+        const siblings = [...el.parentElement.children].filter(c=>c.classList.contains('reveal'));
+        const idx = siblings.indexOf(el);
+        setTimeout(()=>el.classList.add('in'), Math.max(0,idx)*140);
+        io.unobserve(el);
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+
+/* ---------- 趣味匹配 ---------- */
+(function(){
+  const state = {mode:null, game:null};
+  const textEl = document.getElementById('requestText');
+  const btnCopy = document.getElementById('btnCopy');
+  const btnSend = document.getElementById('btnSend');
+  btnCopy.textContent = SITE_TEXT.btnCopy;
+  btnSend.textContent = SITE_TEXT.btnSend;
+  textEl.textContent = SITE_TEXT.matchEmpty;
+
+  function fillChips(id, list){
+    const wrap = document.getElementById(id);
+    list.forEach(v=>{
+      const c = document.createElement('span');
+      c.className = 'chip';
+      c.dataset.v = v;
+      c.textContent = v;
+      wrap.appendChild(c);
+    });
+  }
+  fillChips('modeChips', SITE_TEXT.matchModes);
+  fillChips('gameChips', SITE_TEXT.matchGames);
+
+  function buildText(){
+    if(!state.mode && !state.game) return null;
+    const g = state.game || SITE_TEXT.matchPickGame;
+    const m = state.mode || SITE_TEXT.matchPickMode;
+    return SITE_TEXT.matchTemplate.replace('{game}', g).replace('{mode}', m);
+  }
+  function render(){
+    const t = buildText();
+    if(!t){ textEl.textContent = SITE_TEXT.matchEmpty; return; }
+    const g = state.game ? '<b class="pk">' + state.game + '</b>' : '<b style="color:var(--dim)">' + SITE_TEXT.matchPickGame + '</b>';
+    const m = state.mode ? '<b>' + state.mode + '</b>' : '<b style="color:var(--dim)">' + SITE_TEXT.matchPickMode + '</b>';
+    textEl.innerHTML = SITE_TEXT.matchTemplate.replace('{game}', g).replace('{mode}', m);
+  }
+  function bind(id, key){
+    document.getElementById(id).addEventListener('click', e=>{
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      chip.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+      chip.classList.add('on');
+      state[key] = chip.dataset.v;
+      render();
+    });
+  }
+  bind('modeChips','mode');
+  bind('gameChips','game');
+
+  btnCopy.addEventListener('click', async ()=>{
+    const t = buildText();
+    if(!t){
+      btnCopy.textContent = SITE_TEXT.btnCopyEmpty;
+      setTimeout(()=>btnCopy.textContent = SITE_TEXT.btnCopy, 1200);
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(t);
+    }catch(e){
+      const ta = document.createElement('textarea');
+      ta.value = t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    btnCopy.textContent = SITE_TEXT.btnCopied;
+    setTimeout(()=>btnCopy.textContent = SITE_TEXT.btnCopy, 1600);
+  });
+
+  btnSend.addEventListener('click', ()=>{
+    const t = buildText();
+    if(t){ try{ navigator.clipboard.writeText(t); }catch(e){} }
+  });
+})();
+</script>
+</body>
+</html>
